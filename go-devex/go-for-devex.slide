@@ -1,0 +1,184 @@
+Introduction to Golang
+or how to CR spaceflight
+16:00 27 Jun 2017
+Tags: golang, devex, spaceflight
+
+Miguel Bernabeu
+Infrastructure Engineer, Devex
+miguel.bernabeu@devex.com
+
+* Topics
+
+- Language features
+- Code organization
+- Packages
+- Example discussion
+
+* Language features
+
+* Overview
+
+- Statically compiled
+- Strong typed
+- Big standard library
+- Fast compilation
+- Fast execution
+- Concurrency as first-class feature
+- Cross platform cross-compiled
+
+* Syntax
+
+.play -edit syntax.go
+
+* Functions
+
+ func NoReturn(i int) {
+ func OneReturn(i int) string {
+ func TwoReturn(i int) (string, error) {
+ func NamedReturn(i int) (s string, err error) { //golang 1.7+
+
+May return more than one value. _error_ is a built-in type.
+
+* Type method
+
+Function that acts on a struct, similar to methods in OOP languages.
+
+.code method.go
+
+May act by value (not alter original struct) or by pointer (modify
+struct).
+
+* Anonymous function
+
+.play -edit anonymous.go
+
+* Function as variable
+
+.play -edit funcvar.go
+
+* If, Else If and Else
+
+As usual. If - Else clauses are rare and Else If clauses tend to be replaced by switches whenever possible.
+
+  if() { /* */ }                                     // Normal if
+  if() { /* */ } else { /* */ }                      // If - Else clause
+  if() { /* */ } else if() { /* */ } else { /* */ }  // Else if example
+
+* Loops
+
+There's only one keyword for all kinds of loops
+
+  for {                            // Infinite loop
+  for true {                       // While loop
+  for i, v := range array {        // get index and value
+  for _, v := range array {        // discard index, get value
+  for i := 0; i < limit; i++ {     // C for loop
+
+* Switch statement
+
+It can switch on any type
+
+  switch f := fruit { // Assign to variable so we can use it in case bodies.
+  case "apple":
+          fmt.Println(f)
+  case "banana":
+          fmt.Println(f)
+  default:
+          fmt.Println("Unknown fruit")
+  }
+
+Without expression it can be used to compact if-else if-else expressions.
+
+* Structs
+
+As C structures, declare a set of fields together.
+
+   // Array of structures with 2 int fields
+   var example = []struct{ // Slice of structs
+	id, val int
+	unused string // defaults to empty string
+   }
+   example[0] = { 1, 2 }           // Default init
+   example[1] = { id: 1, val: 2 }  // Named init
+   example[2] = { val: 2, id: 1 }  // Named init
+
+* Interfaces
+
+Interfaces define a contract. Types fulfilling the methods validate the interface.
+
+.code interfaces.go
+
+* Arrays and Slices
+
+Arrays are fixed size groups of physical memory cells. Slices are subsets of an array with a beginning and end pointers.
+
+   array := [256]byte   // 256 byte array (fixed size)
+   slice := array[:]    // represents whole array as slice
+   begin := slice[:128] // first 128 elements of the array
+   end := slice[128:]   // last 128 elements of array
+
+   other := make([]int, 256, 256)  // slice of 256 elements
+   other = append(other, 3)        // slice has 257 elements, last is 3
+
+* Maps
+
+Associative, hash maps.
+
+.play -edit maps.go
+
+* Goroutines
+
+Go routines are threads that execute on their own independently of the main thread. They are reaped once they return.
+
+To create a goroutine, you need to call a function preceded by the _go_ keyword.
+
+.play -edit routine.go
+
+* Channels
+
+Shared buffer for inter-thread messaging.
+
+Read line from channel and process it until there's nothing else in channel.
+
+.code channels.go /QSTART OMIT/,/QEND OMIT/
+
+* Channels (continued)
+
+Read line into channel and return the channel (it will fill the channel while we continue execution).
+
+.code channels.go /START OMIT/,/END OMIT/
+
+* Packages
+
+* Code organization
+
+Code is organized in packages.
+
+- All files of the same package must be in the same directory.
+- Only one package per directory.
+- Test files belong to the package and must end in *_test.go
+- Imports follow path to directory
+- Unused imports are compilation errors
+
+* Testing package
+
+_testing_ is the standard library's package for testing go code. It's based on 3 kinds of functions:
+
+  func TestSomething(t *testing.T) {
+
+  func ExampleSomething(t *testing.T) {
+
+  func BenchmarkSomething(t *testing.T) {
+
+* Further resources
+
+.link http://golang.org/tour Tour of Go
+.link
+
+* Example discussion
+
+* Proxy (main code)
+.code ../../../go//src/github.com/miguelbernadi/proxy/main.go /SMAIN OMIT/,/EMAIN OMIT/
+
+* Proxy (proxy function)
+.code ../../../go//src/github.com/miguelbernadi/proxy/main.go /START OMIT/,/END OMIT/
