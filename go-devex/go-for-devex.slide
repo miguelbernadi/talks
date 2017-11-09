@@ -1,6 +1,6 @@
 Introduction to Golang
 or how to CR spaceflight
-16:00 27 Jun 2017
+17:30 9 Nov 2017
 Tags: golang, devex, spaceflight
 
 Miguel Bernabeu
@@ -173,7 +173,7 @@ _testing_ is the standard library's package for testing go code. It's based on 3
 * Further resources
 
 .link http://golang.org/tour Tour of Go
-.link
+.link https://github.com/miguelbernadi/talks/tree/master/go-devex This talk
 
 * Example discussion
 
