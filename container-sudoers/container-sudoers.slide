@@ -1,0 +1,95 @@
+What is a container, really?
+19:00 6 Mar 2018
+Tags: golang, containers, sudoers
+
+Miguel Bernabeu
+Infrastructure Engineer, Devex
+miguel.bernabeu@devex.com
+
+* Original sources
+
+This talk was taken from Liz Rice at golanguk 2016
+.link https://www.youtube.com/watch?v=HPuvDm8IC-4
+
+Her talk is based Julian Friedman's article:
+.link https://gist.github.com/julz/c0017fa7a40de0543001
+.link https://www.infoq.com/articles/build-a-container-golang
+
+* Topics
+
+- Short intro
+- Live coding a container
+- Wrap up
+
+* Myths
+
+* People say
+Containers are...
+
+- ... lightweight VMs.
+- ... *like* chroot.
+- ... better.
+- ... docker.
+
+* That's false
+
+They are another tool.
+
+Containers are Linux processes that use some kernel isolation features.
+
+Only Linux Kernel.
+
+Only *some* isolation features.
+
+* Live coding
+
+* But first... Docker demo
+
+docker run alpine:latest echo "Hello Sudoers!"
+
+docker run -it alpine:latest /bin/sh
+# hostname
+# ps -A
+
+* SysProcAttr?
+
+// SysProcAttr holds optional, operating system-specific attributes.
+// Run passes it to os.StartProcess as the os.ProcAttr's Sys field.
+   SysProcAttr *syscall.SysProcAttr
+
+https://golang.org/pkg/os/exec/#Cmd
+
+https://golang.org/pkg/syscall/#SysProcAttr
+
+* Namespaces
+
+- Unix Timesharing System
+- PID
+- Mount points
+- Users
+- IPC
+- Networking
+- Cgroup
+
+.link http://man7.org/linux/man-pages/man7/namespaces.7.html
+
+* Further control
+
+- Resources: cgroups
+- Syscalls: capabilities, seccomp, SELinux, AppArmor, Tomoyo, SMACK...
+
+.link https://github.com/moby/moby/blob/master/oci/defaults.go#L14-L30
+.link http://man7.org/linux/man-pages/man7/capabilities.7.html
+.link https://github.com/moby/moby/blob/master/profiles/seccomp/default.json
+.link https://github.com/moby/moby/tree/master/contrib/apparmor
+
+Everything a process has, does or sees, a container does too.
+
+Anything that limits a process, does a container too.
+
+* Q&A
+
+* Images
+
+docker run --rm --detach alpine /bin/sh -c "sleep 600"
+docker export -o /home/rootfs/image.tar <container_id>
